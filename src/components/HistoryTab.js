@@ -155,7 +155,7 @@ const HistoryTab = () => {
   const currentData = nutritionalData[selectedPeriod];
 
   return (
-    <div style={{ maxWidth: '800px' }}>
+    <div style={{ Width: '100%' }}>
       {/* Nutritional Overview */}
       <Card title={`Nutritional Overview - ${selectedPeriod.charAt(0).toUpperCase() + selectedPeriod.slice(1)}`}>
         <div style={{ marginBottom: '1.5rem' }}>

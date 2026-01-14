@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const PresentTab = () => {
+  const [chartType, setChartType] = useState('calories');
+
   // Mock data - in real app, this would come from backend
-  const foodImage = "https://via.placeholder.com/400x300/007bff/ffffff?text=Food+Photo";
+  const currentFoodImage = "https://via.placeholder.com/300x200/e74c3c/ffffff?text=Current+Meal";
+
+  const currentFoodNutrition = {
+    name: "Grilled Chicken Salad",
+    calories: 420,
+    carbs: "25g (8%)",
+    proteins: "35g (70%)",
+    fats: "22g (34%)",
+    fiber: "8g",
+    sugar: "6g"
+  };
 
   const foodCategories = [
     "Vegetables & Fruits",
@@ -14,7 +26,30 @@ const PresentTab = () => {
   const meals = {
     breakfast: ["Oatmeal with fruits", "Greek yogurt", "Whole grain toast"],
     lunch: ["Grilled chicken salad", "Brown rice", "Mixed vegetables"],
-    dinner: [] // Empty array means no dinner recorded
+    dinner: ["Baked salmon", "Quinoa", "Steamed broccoli"]
+  };
+
+  // Pie chart data based on selected type
+  const getPieChartData = () => {
+    if (chartType === 'calories') {
+      return [
+        { label: 'Breakfast', value: 35, color: '#ff6b6b' },
+        { label: 'Lunch', value: 45, color: '#4ecdc4' },
+        { label: 'Dinner', value: 20, color: '#45b7d1' }
+      ];
+    } else if (chartType === 'macronutrients') {
+      return [
+        { label: 'Carbs', value: 45, color: '#ff9f40' },
+        { label: 'Proteins', value: 30, color: '#ff6b6b' },
+        { label: 'Fats', value: 25, color: '#4ecdc4' }
+      ];
+    } else if (chartType === 'micronutrients') {
+      return [
+        { label: 'Vitamins', value: 40, color: '#a8e6cf' },
+        { label: 'Minerals', value: 35, color: '#ffd3b6' },
+        { label: 'Other', value: 25, color: '#dcedc8' }
+      ];
+    }
   };
 
   const Card = ({ title, children, bgColor = '#f8f9fa' }) => (
@@ -37,20 +72,63 @@ const PresentTab = () => {
     </div>
   );
 
-  const MealItem = ({ mealType, items }) => {
-    if (items.length === 0) return null; // Don't show if no items
+  const PieChart = ({ data }) => {
+    const total = data.reduce((sum, item) => sum + item.value, 0);
+    let cumulativePercent = 0;
 
     return (
-      <div style={{ marginBottom: '1rem' }}>
-        <h4 style={{
-          margin: '0 0 0.5rem 0',
-          color: '#495057',
-          fontSize: '1rem',
-          fontWeight: '500',
-          textTransform: 'capitalize'
-        }}>
-          {mealType}
-        </h4>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{
+          width: '200px',
+          height: '200px',
+          borderRadius: '50%',
+          background: `conic-gradient(${data.map(item => {
+            const startPercent = cumulativePercent;
+            cumulativePercent += (item.value / total) * 100;
+            return `${item.color} ${startPercent}% ${cumulativePercent}%`;
+          }).join(', ')})`,
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+        }}></div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem', marginTop: '1rem' }}>
+          {data.map((item, index) => (
+            <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div style={{
+                width: '12px',
+                height: '12px',
+                backgroundColor: item.color,
+                borderRadius: '2px'
+              }}></div>
+              <span style={{ fontSize: '0.9rem', color: '#666666' }}>
+                {item.label}: {item.value}%
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const MealCard = ({ mealType, items }) => (
+    <div style={{
+      flex: 1,
+      backgroundColor: '#f8f9fa',
+      borderRadius: '8px',
+      padding: '1rem',
+      border: '1px solid #e9ecef',
+      minHeight: '120px'
+    }}>
+      <h4 style={{
+        margin: '0 0 0.75rem 0',
+        color: '#495057',
+        fontSize: '1rem',
+        fontWeight: '600',
+        textTransform: 'capitalize',
+        borderBottom: '2px solid #007bff',
+        paddingBottom: '0.5rem'
+      }}>
+        {mealType}
+      </h4>
+      {items.length > 0 ? (
         <ul style={{
           margin: 0,
           paddingLeft: '1.2rem',
@@ -59,44 +137,106 @@ const PresentTab = () => {
           {items.map((item, index) => (
             <li key={index} style={{
               marginBottom: '0.25rem',
-              fontSize: '0.95rem'
+              fontSize: '0.9rem'
             }}>
               {item}
             </li>
           ))}
         </ul>
-      </div>
-    );
-  };
+      ) : (
+        <p style={{
+          margin: 0,
+          color: '#999999',
+          fontStyle: 'italic',
+          fontSize: '0.9rem'
+        }}>
+          No {mealType} recorded
+        </p>
+      )}
+    </div>
+  );
 
   return (
-    <div style={{ maxWidth: '800px' }}>
-      {/* Food Image Section */}
-      <Card title="Today's Meal Photo" bgColor="#ffffff">
-        <div style={{
-          textAlign: 'center',
-          padding: '1rem',
-          border: '2px dashed #dee2e6',
-          borderRadius: '8px',
-          backgroundColor: '#f8f9fa'
-        }}>
-          <img
-            src={foodImage}
-            alt="Today's meal"
+    <div style={{ Width: '100%' }}>
+      {/* Pie Chart Section */}
+      <Card title="Daily Nutrition Overview" bgColor="#ffffff">
+        <div style={{ marginBottom: '1rem' }}>
+          <label style={{ display: 'block', marginBottom: '0.5rem', color: '#1a1a1a', fontWeight: '500' }}>
+            Select Chart Type:
+          </label>
+          <select
+            value={chartType}
+            onChange={(e) => setChartType(e.target.value)}
             style={{
-              maxWidth: '100%',
-              height: 'auto',
-              borderRadius: '8px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+              padding: '0.5rem',
+              border: '1px solid #ced4da',
+              borderRadius: '4px',
+              backgroundColor: 'white',
+              fontSize: '1rem'
             }}
-          />
-          <p style={{
-            margin: '1rem 0 0 0',
-            color: '#6c757d',
-            fontSize: '0.9rem'
-          }}>
-            Photo captured from your meal
-          </p>
+          >
+            <option value="calories">Calories by Meal</option>
+            <option value="macronutrients">Macronutrients</option>
+            <option value="micronutrients">Micronutrients</option>
+          </select>
+        </div>
+        <PieChart data={getPieChartData()} />
+      </Card>
+
+      {/* Current Food Section */}
+      <Card title="Current Meal Details" bgColor="#ffffff">
+        <div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+          {/* Food Image */}
+          <div style={{ flex: 1 }}>
+            <img
+              src={currentFoodImage}
+              alt="Current meal"
+              style={{
+                width: '100%',
+                maxWidth: '300px',
+                height: 'auto',
+                borderRadius: '8px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+              }}
+            />
+          </div>
+
+          {/* Nutrition Details */}
+          <div style={{ flex: 1 }}>
+            <h4 style={{ margin: '0 0 1rem 0', color: '#1a1a1a', fontSize: '1.1rem' }}>
+              {currentFoodNutrition.name}
+            </h4>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ padding: '0.75rem', backgroundColor: '#fff3cd', borderRadius: '6px', border: '1px solid #ffeaa7' }}>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#d68910' }}>
+                  {currentFoodNutrition.calories}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#856404' }}>Calories</div>
+              </div>
+              <div style={{ padding: '0.75rem', backgroundColor: '#d1ecf1', borderRadius: '6px', border: '1px solid #bee5eb' }}>
+                <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#0c5460' }}>
+                  {currentFoodNutrition.carbs}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#0c5460' }}>Carbs</div>
+              </div>
+              <div style={{ padding: '0.75rem', backgroundColor: '#f8d7da', borderRadius: '6px', border: '1px solid #f5c6cb' }}>
+                <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#721c24' }}>
+                  {currentFoodNutrition.proteins}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#721c24' }}>Proteins</div>
+              </div>
+              <div style={{ padding: '0.75rem', backgroundColor: '#d4edda', borderRadius: '6px', border: '1px solid #c3e6cb' }}>
+                <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#155724' }}>
+                  {currentFoodNutrition.fats}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#155724' }}>Fats</div>
+              </div>
+            </div>
+            <div style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#666666' }}>
+              <div>Fiber: {currentFoodNutrition.fiber}</div>
+              <div>Sugar: {currentFoodNutrition.sugar}</div>
+            </div>
+          </div>
         </div>
       </Card>
 
@@ -118,20 +258,13 @@ const PresentTab = () => {
         </div>
       </Card>
 
-      {/* Meals Breakdown */}
-      <Card title="Today's Meals">
-        <MealItem mealType="breakfast" items={meals.breakfast} />
-        <MealItem mealType="lunch" items={meals.lunch} />
-        <MealItem mealType="dinner" items={meals.dinner} />
-        {meals.breakfast.length === 0 && meals.lunch.length === 0 && meals.dinner.length === 0 && (
-          <p style={{
-            margin: 0,
-            color: '#6c757d',
-            fontStyle: 'italic'
-          }}>
-            No meals recorded for today
-          </p>
-        )}
+      {/* Meals Section */}
+      <Card title="Today's Meals" bgColor="#ffffff">
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+          <MealCard mealType="breakfast" items={meals.breakfast} />
+          <MealCard mealType="lunch" items={meals.lunch} />
+          <MealCard mealType="dinner" items={meals.dinner} />
+        </div>
       </Card>
     </div>
   );

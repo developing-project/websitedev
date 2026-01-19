@@ -401,11 +401,10 @@ const PresentTab = () => {
             Welcome back! 👋
           </h2>
           <p style={{
-            margin: '0',
+            margin: '0 auto',
             fontSize: '1.1rem',
             color: '#4a5568',
             maxWidth: '600px',
-            margin: '0 auto',
             lineHeight: '1.6'
           }}>
             You're doing great! Keep up the healthy eating habits. Here's your nutrition overview for today.

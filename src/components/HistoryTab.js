@@ -233,43 +233,7 @@ const HistoryTab = () => {
     );
   };
 
-  const MealRecord = ({ record, type }) => {
-    if (type === 'daily') {
-      return (
-        <div style={{ marginBottom: '1.5rem', padding: '1rem', backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
-          <h4 style={{ margin: '0 0 0.5rem 0', color: '#495057', fontSize: '1rem' }}>{record.date}</h4>
-          {Object.entries(record.meals).map(([mealType, items]) => {
-            if (items.length === 0) return null;
-            return (
-              <div key={mealType} style={{ marginBottom: '0.5rem' }}>
-                <span style={{ fontWeight: '500', color: '#666666', textTransform: 'capitalize' }}>{mealType}: </span>
-                <span style={{ color: '#1a1a1a' }}>{items.join(', ')}</span>
-              </div>
-            );
-          })}
-        </div>
-      );
-    } else if (type === 'weekly') {
-      return (
-        <div style={{ marginBottom: '1rem', padding: '1rem', backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
-          <h4 style={{ margin: '0 0 0.5rem 0', color: '#495057', fontSize: '1rem' }}>{record.week}</h4>
-          <p style={{ margin: 0, color: '#666666' }}>
-            Total meals: {record.meals.totalMeals} | Average per day: {record.meals.avgDaily}
-          </p>
-        </div>
-      );
-    } else if (type === 'monthly') {
-      return (
-        <div style={{ marginBottom: '1rem', padding: '1rem', backgroundColor: '#f8f9fa', borderRadius: '6px' }}>
-          <h4 style={{ margin: '0 0 0.5rem 0', color: '#495057', fontSize: '1rem' }}>{record.month}</h4>
-          <p style={{ margin: 0, color: '#666666' }}>
-            Total meals: {record.meals.totalMeals} | Average per day: {record.meals.avgDaily}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
+
 
   const EnhancedMealRecord = ({ record, type, index }) => {
     const mealTypeColors = {

@@ -25,12 +25,13 @@ const Landing = () => {
       backgroundColor: '#ffffff',
       padding: '2rem'
     }}>
-      <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+      <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
         <h1 style={{
-          fontSize: '2.5rem',
-          marginBottom: '0.5rem',
-          color: '#1a1a1a',
-          fontWeight: '600'
+          margin: '0px',
+          color: 'rgb(26, 26, 26)',
+          fontSize: '1.8rem',
+          fontWeight: '600',
+          textAlign: 'center'
         }}>
           Eating Behavior Insight
         </h1>

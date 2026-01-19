@@ -90,10 +90,8 @@ const PresentTab = () => {
               cumulativePercent += (item.value / total) * 100;
               return `${item.color} ${startPercent}% ${cumulativePercent}%`;
             }).join(', ')})`,
-
             boxShadow: '0 8px 32px rgba(0,0,0,0.12), inset 0 2px 8px rgba(255,255,255,0.3)',
-            animation: 'pulse 3s ease-in-out infinite',
-            transition: 'transform 0.3s ease'
+            animation: 'pulse 3s ease-in-out infinite'
           }}></div>
 
           {/* Center circle for donut effect */}
@@ -106,7 +104,7 @@ const PresentTab = () => {
             height: '80px',
             borderRadius: '50%',
             background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-            boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.05)',
+            boxShadow: 'inset 0 2px 8px rgba(0,0,0,0.1)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -116,20 +114,6 @@ const PresentTab = () => {
           }}>
             {total}% Total
           </div>
-
-          {/* Animated rings */}
-          <div style={{
-            position: 'absolute',
-            top: '-10px',
-            left: '-10px',
-            right: '-10px',
-            bottom: '-10px',
-            border: '2px solid transparent',
-            borderTop: '2px solid #007bff',
-            borderRadius: '50%',
-            animation: 'spin 2s linear infinite',
-            opacity: 0.6
-          }}></div>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '1rem', width: '100%', maxWidth: '400px' }}>
@@ -149,12 +133,10 @@ const PresentTab = () => {
             onMouseOver={(e) => {
               e.target.style.transform = 'translateY(-2px)';
               e.target.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
-              e.target.style.borderColor = item.color;
             }}
             onMouseOut={(e) => {
               e.target.style.transform = 'translateY(0)';
               e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
-              e.target.style.borderColor = `${item.color}30`;
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <div style={{
@@ -183,594 +165,79 @@ const PresentTab = () => {
           ))}
         </div>
 
-        {/* Add CSS animations */}
         <style>{`
           @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.02); }
-          }
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
           }
         `}</style>
       </div>
     );
   };
 
-  const MealCard = ({ mealType, items }) => {
-    const isBreakfast = mealType === 'breakfast';
-    const isLunch = mealType === 'lunch';
-    const isDinner = mealType === 'dinner';
-
-    if (isBreakfast) {
-      return (
-        <div style={{
-          flex: 1,
-          background: 'linear-gradient(135deg, #ffeaa7 0%, #fab1a0 50%, #fd79a8 100%)',
-          borderRadius: '16px',
-          padding: '1.5rem',
-          border: '3px solid rgba(255,255,255,0.3)',
-          boxShadow: '0 12px 40px rgba(253, 121, 168, 0.3)',
-          minHeight: '140px',
-          position: 'relative',
-          overflow: 'hidden',
-          cursor: 'pointer',
-          transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-          animation: 'breakfastGlow 2s ease-in-out infinite alternate'
-        }}
-        onMouseOver={(e) => {
-          e.target.style.transform = 'translateY(-6px) scale(1.02)';
-          e.target.style.boxShadow = '0 20px 60px rgba(253, 121, 168, 0.4)';
-        }}
-        onMouseOut={(e) => {
-          e.target.style.transform = 'translateY(0) scale(1)';
-          e.target.style.boxShadow = '0 12px 40px rgba(253, 121, 168, 0.3)';
-        }}
-        >
-          {/* Animated background elements */}
-          <div style={{
-            position: 'absolute',
-            top: '-20px',
-            right: '-20px',
-            width: '80px',
-            height: '80px',
-            background: 'rgba(255,255,255,0.2)',
-            borderRadius: '50%',
-            animation: 'float 3s ease-in-out infinite'
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            bottom: '-15px',
-            left: '-15px',
-            width: '60px',
-            height: '60px',
-            background: 'rgba(255,255,255,0.1)',
-            borderRadius: '50%',
-            animation: 'float 4s ease-in-out infinite reverse'
-          }}></div>
-
-          {/* Floating badge */}
-          <div style={{
-            position: 'absolute',
-            top: '-8px',
-            right: '-8px',
-            background: 'linear-gradient(135deg, #ffd700 0%, #ffed4e 100%)',
-            color: '#b8860b',
-            padding: '0.3rem 0.8rem',
-            borderRadius: '15px',
-            fontSize: '0.7rem',
-            fontWeight: '700',
-            boxShadow: '0 4px 12px rgba(255, 215, 0, 0.4)',
-            animation: 'bounceIn 1s ease-out 0.5s both',
-            border: '2px solid rgba(255,255,255,0.5)'
-          }}>
-            🌅 Morning Fuel
-          </div>
-
-          <h4 style={{
-            margin: '0 0 1rem 0',
-            color: '#2d3436',
-            fontSize: '1.3rem',
-            fontWeight: '800',
-            textTransform: 'capitalize',
-            textShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            animation: 'slideInRight 0.8s ease-out',
-            position: 'relative',
-            zIndex: 2
-          }}>
-            🍳 {mealType}
-          </h4>
-
-          {items.length > 0 ? (
-            <ul style={{
-              margin: 0,
-              paddingLeft: '1.5rem',
-              color: '#2d3436',
-              position: 'relative',
-              zIndex: 2
-            }}>
-              {items.map((item, index) => (
-                <li key={index} style={{
-                  marginBottom: '0.5rem',
-                  fontSize: '0.95rem',
-                  fontWeight: '500',
-                  animation: `fadeInUp 0.6s ease-out ${0.2 + index * 0.1}s both`,
-                  position: 'relative'
-                }}>
-                  <span style={{
-                    background: 'rgba(255,255,255,0.8)',
-                    padding: '0.2rem 0.6rem',
-                    borderRadius: '10px',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                    display: 'inline-block',
-                    backdropFilter: 'blur(10px)'
-                  }}>
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p style={{
-              margin: 0,
-              color: '#636e72',
-              fontStyle: 'italic',
-              fontSize: '0.9rem',
-              position: 'relative',
-              zIndex: 2,
-              animation: 'fadeIn 0.8s ease-out 0.3s both'
-            }}>
-              No {mealType} recorded
-            </p>
-          )}
-
-          {/* Additional breakfast animations */}
-          <style>{`
-            @keyframes breakfastGlow {
-              0% { box-shadow: 0 12px 40px rgba(253, 121, 168, 0.3); }
-              100% { box-shadow: 0 12px 40px rgba(253, 121, 168, 0.5), 0 0 20px rgba(253, 121, 168, 0.2); }
-            }
-            @keyframes float {
-              0%, 100% { transform: translateY(0px) rotate(0deg); }
-              50% { transform: translateY(-10px) rotate(5deg); }
-            }
-            @keyframes bounceIn {
-              0% { opacity: 0; transform: scale(0.3); }
-              50% { opacity: 1; transform: scale(1.05); }
-              70% { transform: scale(0.9); }
-              100% { opacity: 1; transform: scale(1); }
-            }
-            @keyframes slideInRight {
-              0% { opacity: 0; transform: translateX(30px); }
-              100% { opacity: 1; transform: translateX(0); }
-            }
-            @keyframes fadeInUp {
-              0% { opacity: 0; transform: translateY(20px); }
-              100% { opacity: 1; transform: translateY(0); }
-            }
-          `}</style>
-        </div>
-      );
-    }
-
-    if (isLunch) {
-      return (
-        <div style={{
-          flex: 1,
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
-          borderRadius: '16px',
-          padding: '1.5rem',
-          border: '3px solid rgba(255,255,255,0.3)',
-          boxShadow: '0 12px 40px rgba(102, 126, 234, 0.3)',
-          minHeight: '140px',
-          position: 'relative',
-          overflow: 'hidden',
-          cursor: 'pointer',
-          transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-          animation: 'lunchGlow 2s ease-in-out infinite alternate'
-        }}
-        onMouseOver={(e) => {
-          e.target.style.transform = 'translateY(-6px) scale(1.02)';
-          e.target.style.boxShadow = '0 20px 60px rgba(102, 126, 234, 0.4)';
-        }}
-        onMouseOut={(e) => {
-          e.target.style.transform = 'translateY(0) scale(1)';
-          e.target.style.boxShadow = '0 12px 40px rgba(102, 126, 234, 0.3)';
-        }}
-        >
-          {/* Animated background elements */}
-          <div style={{
-            position: 'absolute',
-            top: '-25px',
-            right: '-15px',
-            width: '90px',
-            height: '90px',
-            background: 'rgba(255,255,255,0.15)',
-            borderRadius: '50%',
-            animation: 'float 3.5s ease-in-out infinite'
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            bottom: '-20px',
-            left: '-10px',
-            width: '70px',
-            height: '70px',
-            background: 'rgba(255,255,255,0.1)',
-            borderRadius: '50%',
-            animation: 'float 4.5s ease-in-out infinite reverse'
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            top: '20px',
-            left: '20px',
-            width: '30px',
-            height: '30px',
-            background: 'rgba(255,255,255,0.2)',
-            borderRadius: '50%',
-            animation: 'pulse 2s ease-in-out infinite'
-          }}></div>
-
-          {/* Floating badge */}
-          <div style={{
-            position: 'absolute',
-            top: '-8px',
-            right: '-8px',
-            background: 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)',
-            color: 'white',
-            padding: '0.3rem 0.8rem',
-            borderRadius: '15px',
-            fontSize: '0.7rem',
-            fontWeight: '700',
-            boxShadow: '0 4px 12px rgba(255, 107, 53, 0.4)',
-            animation: 'bounceIn 1s ease-out 0.5s both',
-            border: '2px solid rgba(255,255,255,0.5)'
-          }}>
-            ☀️ Midday Energy
-          </div>
-
-          <h4 style={{
-            margin: '0 0 1rem 0',
-            color: 'white',
-            fontSize: '1.3rem',
-            fontWeight: '800',
-            textTransform: 'capitalize',
-            textShadow: '0 2px 4px rgba(0,0,0,0.3)',
-            animation: 'slideInLeft 0.8s ease-out',
-            position: 'relative',
-            zIndex: 2
-          }}>
-            🥗 {mealType}
-          </h4>
-
-          {items.length > 0 ? (
-            <ul style={{
-              margin: 0,
-              paddingLeft: '1.5rem',
-              color: 'white',
-              position: 'relative',
-              zIndex: 2
-            }}>
-              {items.map((item, index) => (
-                <li key={index} style={{
-                  marginBottom: '0.5rem',
-                  fontSize: '0.95rem',
-                  fontWeight: '500',
-                  animation: `fadeInUp 0.6s ease-out ${0.2 + index * 0.1}s both`,
-                  position: 'relative'
-                }}>
-                  <span style={{
-                    background: 'rgba(255,255,255,0.2)',
-                    padding: '0.2rem 0.6rem',
-                    borderRadius: '10px',
-                    backdropFilter: 'blur(10px)',
-                    display: 'inline-block',
-                    border: '1px solid rgba(255,255,255,0.3)'
-                  }}>
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p style={{
-              margin: 0,
-              color: 'rgba(255,255,255,0.8)',
-              fontStyle: 'italic',
-              fontSize: '0.9rem',
-              position: 'relative',
-              zIndex: 2,
-              animation: 'fadeIn 0.8s ease-out 0.3s both'
-            }}>
-              No {mealType} recorded
-            </p>
-          )}
-
-          {/* Additional lunch animations */}
-          <style>{`
-            @keyframes lunchGlow {
-              0% { box-shadow: 0 12px 40px rgba(102, 126, 234, 0.3); }
-              100% { box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5), 0 0 20px rgba(102, 126, 234, 0.2); }
-            }
-            @keyframes float {
-              0%, 100% { transform: translateY(0px) rotate(0deg); }
-              50% { transform: translateY(-12px) rotate(8deg); }
-            }
-            @keyframes pulse {
-              0%, 100% { transform: scale(1); opacity: 0.7; }
-              50% { transform: scale(1.1); opacity: 1; }
-            }
-            @keyframes bounceIn {
-              0% { opacity: 0; transform: scale(0.3); }
-              50% { opacity: 1; transform: scale(1.05); }
-              70% { transform: scale(0.9); }
-              100% { opacity: 1; transform: scale(1); }
-            }
-            @keyframes slideInLeft {
-              0% { opacity: 0; transform: translateX(-30px); }
-              100% { opacity: 1; transform: translateX(0); }
-            }
-            @keyframes fadeInUp {
-              0% { opacity: 0; transform: translateY(20px); }
-              100% { opacity: 1; transform: translateY(0); }
-            }
-          `}</style>
-        </div>
-      );
-    }
-
-    if (isDinner) {
-      return (
-        <div style={{
-          flex: 1,
-          background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%)',
-          borderRadius: '16px',
-          padding: '1.5rem',
-          border: '3px solid rgba(255,255,255,0.1)',
-          boxShadow: '0 12px 40px rgba(44, 62, 80, 0.4)',
-          minHeight: '140px',
-          position: 'relative',
-          overflow: 'hidden',
-          cursor: 'pointer',
-          transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-          animation: 'dinnerGlow 2s ease-in-out infinite alternate'
-        }}
-        onMouseOver={(e) => {
-          e.target.style.transform = 'translateY(-6px) scale(1.02)';
-          e.target.style.boxShadow = '0 20px 60px rgba(44, 62, 80, 0.5)';
-        }}
-        onMouseOut={(e) => {
-          e.target.style.transform = 'translateY(0) scale(1)';
-          e.target.style.boxShadow = '0 12px 40px rgba(44, 62, 80, 0.4)';
-        }}
-        >
-          {/* Animated background elements */}
-          <div style={{
-            position: 'absolute',
-            top: '-30px',
-            right: '-20px',
-            width: '100px',
-            height: '100px',
-            background: 'radial-gradient(circle, rgba(255,215,0,0.2) 0%, rgba(255,215,0,0.05) 70%)',
-            borderRadius: '50%',
-            animation: 'float 4s ease-in-out infinite'
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            bottom: '-25px',
-            left: '-15px',
-            width: '80px',
-            height: '80px',
-            background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 70%)',
-            borderRadius: '50%',
-            animation: 'float 5s ease-in-out infinite reverse'
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            top: '25px',
-            left: '25px',
-            width: '40px',
-            height: '40px',
-            background: 'radial-gradient(circle, rgba(255,215,0,0.15) 0%, rgba(255,215,0,0.03) 70%)',
-            borderRadius: '50%',
-            animation: 'twinkle 3s ease-in-out infinite'
-          }}></div>
-
-          {/* Stars */}
-          <div style={{
-            position: 'absolute',
-            top: '15px',
-            right: '20px',
-            width: '3px',
-            height: '3px',
-            background: 'rgba(255,215,0,0.8)',
-            borderRadius: '50%',
-            animation: 'twinkle 2s ease-in-out infinite'
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            top: '35px',
-            right: '35px',
-            width: '2px',
-            height: '2px',
-            background: 'rgba(255,255,255,0.6)',
-            borderRadius: '50%',
-            animation: 'twinkle 2.5s ease-in-out infinite 0.5s'
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            bottom: '20px',
-            left: '20px',
-            width: '4px',
-            height: '4px',
-            background: 'rgba(255,215,0,0.7)',
-            borderRadius: '50%',
-            animation: 'twinkle 1.8s ease-in-out infinite 1s'
-          }}></div>
-
-          {/* Floating badge */}
-          <div style={{
-            position: 'absolute',
-            top: '-8px',
-            right: '-8px',
-            background: 'linear-gradient(135deg, #f39c12 0%, #e67e22 100%)',
-            color: 'white',
-            padding: '0.3rem 0.8rem',
-            borderRadius: '15px',
-            fontSize: '0.7rem',
-            fontWeight: '700',
-            boxShadow: '0 4px 12px rgba(243, 156, 18, 0.4)',
-            animation: 'bounceIn 1s ease-out 0.5s both',
-            border: '2px solid rgba(255,255,255,0.3)'
-          }}>
-            🌙 Evening Calm
-          </div>
-
-          <h4 style={{
-            margin: '0 0 1rem 0',
-            color: 'white',
-            fontSize: '1.3rem',
-            fontWeight: '800',
-            textTransform: 'capitalize',
-            textShadow: '0 2px 6px rgba(0,0,0,0.5)',
-            animation: 'slideInUp 0.8s ease-out',
-            position: 'relative',
-            zIndex: 2
-          }}>
-            🍽️ {mealType}
-          </h4>
-
-          {items.length > 0 ? (
-            <ul style={{
-              margin: 0,
-              paddingLeft: '1.5rem',
-              color: 'rgba(255,255,255,0.9)',
-              position: 'relative',
-              zIndex: 2
-            }}>
-              {items.map((item, index) => (
-                <li key={index} style={{
-                  marginBottom: '0.5rem',
-                  fontSize: '0.95rem',
-                  fontWeight: '500',
-                  animation: `fadeInUp 0.6s ease-out ${0.2 + index * 0.1}s both`,
-                  position: 'relative'
-                }}>
-                  <span style={{
-                    background: 'rgba(255,255,255,0.15)',
-                    padding: '0.2rem 0.6rem',
-                    borderRadius: '10px',
-                    backdropFilter: 'blur(10px)',
-                    display: 'inline-block',
-                    border: '1px solid rgba(255,255,255,0.2)'
-                  }}>
-                    {item}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p style={{
-              margin: 0,
-              color: 'rgba(255,255,255,0.7)',
-              fontStyle: 'italic',
-              fontSize: '0.9rem',
-              position: 'relative',
-              zIndex: 2,
-              animation: 'fadeIn 0.8s ease-out 0.3s both'
-            }}>
-              No {mealType} recorded
-            </p>
-          )}
-
-          {/* Additional dinner animations */}
-          <style>{`
-            @keyframes dinnerGlow {
-              0% { box-shadow: 0 12px 40px rgba(44, 62, 80, 0.4); }
-              100% { box-shadow: 0 12px 40px rgba(44, 62, 80, 0.6), 0 0 25px rgba(44, 62, 80, 0.3); }
-            }
-            @keyframes float {
-              0%, 100% { transform: translateY(0px) rotate(0deg); }
-              50% { transform: translateY(-15px) rotate(10deg); }
-            }
-            @keyframes twinkle {
-              0%, 100% { opacity: 0.3; transform: scale(1); }
-              50% { opacity: 1; transform: scale(1.3); }
-            }
-            @keyframes bounceIn {
-              0% { opacity: 0; transform: scale(0.3); }
-              50% { opacity: 1; transform: scale(1.05); }
-              70% { transform: scale(0.9); }
-              100% { opacity: 1; transform: scale(1); }
-            }
-            @keyframes slideInUp {
-              0% { opacity: 0; transform: translateY(20px); }
-              100% { opacity: 1; transform: translateY(0); }
-            }
-            @keyframes fadeInUp {
-              0% { opacity: 0; transform: translateY(20px); }
-              100% { opacity: 1; transform: translateY(0); }
-            }
-          `}</style>
-        </div>
-      );
-    }
-
-    // This should never be reached now, but keeping as fallback
-    return (
-      <div style={{
-        flex: 1,
-        backgroundColor: '#f8f9fa',
-        borderRadius: '8px',
-        padding: '1rem',
-        border: '1px solid #e9ecef',
-        minHeight: '120px'
+  const MealCard = ({ mealType, items }) => (
+    <div style={{
+      background: 'linear-gradient(135deg, #ffeaa7 0%, #fab1a0 50%, #fd79a8 100%)',
+      borderRadius: '16px',
+      padding: '1.5rem',
+      border: '3px solid rgba(255,255,255,0.3)',
+      boxShadow: '0 12px 40px rgba(253, 121, 168, 0.3)',
+      minHeight: '140px',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      <h4 style={{
+        margin: '0 0 1rem 0',
+        color: '#2d3436',
+        fontSize: '1.3rem',
+        fontWeight: '800',
+        textTransform: 'capitalize'
       }}>
-        <h4 style={{
-          margin: '0 0 0.75rem 0',
-          color: '#495057',
-          fontSize: '1rem',
-          fontWeight: '600',
-          textTransform: 'capitalize',
-          borderBottom: '2px solid #007bff',
-          paddingBottom: '0.5rem'
+        🍳 {mealType}
+      </h4>
+
+      {items.length > 0 ? (
+        <ul style={{
+          margin: 0,
+          paddingLeft: '1.5rem',
+          color: '#2d3436'
         }}>
-          {mealType}
-        </h4>
-        {items.length > 0 ? (
-          <ul style={{
-            margin: 0,
-            paddingLeft: '1.2rem',
-            color: '#666666'
-          }}>
-            {items.map((item, index) => (
-              <li key={index} style={{
-                marginBottom: '0.25rem',
-                fontSize: '0.9rem'
+          {items.map((item, index) => (
+            <li key={index} style={{
+              marginBottom: '0.5rem',
+              fontSize: '0.95rem',
+              fontWeight: '500'
+            }}>
+              <span style={{
+                background: 'rgba(255,255,255,0.8)',
+                padding: '0.2rem 0.6rem',
+                borderRadius: '10px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                display: 'inline-block'
               }}>
                 {item}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p style={{
-            margin: 0,
-            color: '#999999',
-            fontStyle: 'italic',
-            fontSize: '0.9rem'
-          }}>
-            No {mealType} recorded
-          </p>
-        )}
-      </div>
-    );
-  };
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p style={{
+          margin: 0,
+          color: '#636e72',
+          fontStyle: 'italic',
+          fontSize: '0.9rem'
+        }}>
+          No {mealType} recorded
+        </p>
+      )}
+    </div>
+  );
 
   return (
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
       {/* Header */}
       <header style={{
@@ -836,7 +303,6 @@ const PresentTab = () => {
             alignItems: 'center',
             gap: '1rem'
           }}>
-            {/* Quick Stats */}
             <div style={{
               display: 'flex',
               gap: '1rem',
@@ -1124,7 +590,7 @@ const PresentTab = () => {
                     }}>
                       <div style={{
                         height: '100%',
-                        width: '35%', // Assuming 420 calories out of ~1200 daily goal = ~35%
+                        width: '35%',
                         background: 'linear-gradient(90deg, #d68910 0%, #f39c12 100%)',
                         borderRadius: '12px',
                         animation: 'progressFill 2s ease-out',
@@ -1181,7 +647,7 @@ const PresentTab = () => {
                     }}>
                       <div style={{
                         height: '100%',
-                        width: '8%', // 8% from the carbs data
+                        width: '8%',
                         background: 'linear-gradient(90deg, #17a2b8 0%, #20c997 100%)',
                         borderRadius: '12px',
                         animation: 'progressFill 1.5s ease-out',
@@ -1229,7 +695,7 @@ const PresentTab = () => {
                     }}>
                       <div style={{
                         height: '100%',
-                        width: '70%', // 70% from the proteins data
+                        width: '70%',
                         background: 'linear-gradient(90deg, #dc3545 0%, #e74c3c 100%)',
                         borderRadius: '12px',
                         animation: 'progressFill 1.5s ease-out 0.2s both',
@@ -1277,7 +743,7 @@ const PresentTab = () => {
                     }}>
                       <div style={{
                         height: '100%',
-                        width: '34%', // 34% from the fats data
+                        width: '34%',
                         background: 'linear-gradient(90deg, #28a745 0%, #20c997 100%)',
                         borderRadius: '12px',
                         animation: 'progressFill 1.5s ease-out 0.4s both',
@@ -1325,10 +791,6 @@ const PresentTab = () => {
               @keyframes shimmer {
                 0% { background-position: -200% center; }
                 100% { background-position: 200% center; }
-              }
-              @keyframes countUp {
-                0% { opacity: 0; transform: translateY(20px); }
-                100% { opacity: 1; transform: translateY(0); }
               }
               @keyframes progressFill {
                 0% { width: 0%; }
@@ -1484,7 +946,7 @@ const PresentTab = () => {
           `}</style>
         </Card>
 
-        {/* Meals Section - Split into separate cards */}
+        {/* Meals Section */}
         <Card title="Today's Meals" bgColor="#ffffff">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <MealCard mealType="breakfast" items={meals.breakfast} />

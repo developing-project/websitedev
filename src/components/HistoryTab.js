@@ -4,7 +4,7 @@ const HistoryTab = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('daily');
   const [showTrackRecord, setShowTrackRecord] = useState(false);
 
-  // Mock nutritional data
+  // Enhanced nutritional data with detailed macro information
   const nutritionalData = {
     daily: {
       macronutrients: {

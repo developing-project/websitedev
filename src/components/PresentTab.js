@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 const PresentTab = () => {
   const [chartType, setChartType] = useState('calories');
-  const [activeTab, setActiveTab] = useState('present');
 
   // Mock data - in real app, this would come from backend
   const currentFoodImage = "https://via.placeholder.com/300x200/e74c3c/ffffff?text=Current+Meal";
@@ -406,7 +405,7 @@ const PresentTab = () => {
             fontSize: '1.1rem',
             color: '#4a5568',
             maxWidth: '600px',
-            margin: '0 auto 0 auto',
+            margin: '0 auto',
             lineHeight: '1.6'
           }}>
             You're doing great! Keep up the healthy eating habits. Here's your nutrition overview for today.

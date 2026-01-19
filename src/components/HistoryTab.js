@@ -93,27 +93,7 @@ const HistoryTab = () => {
     </div>
   );
 
-  const NutrientProgress = ({ label, value }) => (
-    <div style={{ marginBottom: '1rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-        <span style={{ fontSize: '0.9rem', color: '#666666' }}>{label}</span>
-        <span style={{ fontSize: '0.9rem', fontWeight: '500', color: '#1a1a1a' }}>{value}</span>
-      </div>
-      <div style={{
-        height: '8px',
-        backgroundColor: '#e9ecef',
-        borderRadius: '4px',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          height: '100%',
-          backgroundColor: '#007bff',
-          borderRadius: '4px',
-          width: value
-        }}></div>
-      </div>
-    </div>
-  );
+
 
   const MacroNutrientCard = ({ macro, data, colors, icon }) => {
     const { consumed, target, percentage } = data;

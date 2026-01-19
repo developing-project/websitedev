@@ -23,19 +23,19 @@ const Dashboard = () => {
     <div style={{
       minHeight: '100vh',
       backgroundColor: '#ffffff',
-      padding: '2rem'
+      padding: '1rem'
     }}>
       <header style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '2rem',
-        padding: '1rem 0',
-        borderBottom: '1px solid #e0e0e0'
+        marginBottom: '1rem',
+        padding: '0.5rem 0',
+        borderBottom: '1px solid #e5e7eb'
       }}>
         <h1 style={{
           margin: 0,
-          color: '#1a1a1a',
+          color: '#2563eb',
           fontSize: '1.8rem',
           fontWeight: '600'
         }}>
@@ -45,21 +45,20 @@ const Dashboard = () => {
           onClick={handleLogout}
           style={{
             padding: '0.5rem 1rem',
-            backgroundColor: '#f8f9fa',
-            color: '#6c757d',
-            border: '1px solid #dee2e6',
+            backgroundColor: '#dc3545',
+            color: 'white',
+            border: 'none',
             borderRadius: '6px',
             cursor: 'pointer',
             fontSize: '0.9rem',
-            transition: 'all 0.2s'
+            fontWeight: '500',
+            transition: 'all 0.2s ease'
           }}
           onMouseOver={(e) => {
-            e.target.style.backgroundColor = '#e9ecef';
-            e.target.style.borderColor = '#adb5bd';
+            e.target.style.backgroundColor = '#c82333';
           }}
           onMouseOut={(e) => {
-            e.target.style.backgroundColor = '#f8f9fa';
-            e.target.style.borderColor = '#dee2e6';
+            e.target.style.backgroundColor = '#dc3545';
           }}
         >
           Logout
@@ -69,20 +68,32 @@ const Dashboard = () => {
       <nav style={{
         display: 'flex',
         gap: '1rem',
-        marginBottom: '2rem'
+        marginBottom: '1rem'
       }}>
         <button
           onClick={() => setActiveTab('present')}
           style={{
             padding: '0.75rem 1.5rem',
-            backgroundColor: activeTab === 'present' ? '#007bff' : 'transparent',
-            color: activeTab === 'present' ? 'white' : '#6c757d',
-            border: '1px solid #007bff',
-            borderRadius: '6px',
+            backgroundColor: activeTab === 'present' ? '#2563eb' : '#f9fafb',
+            color: activeTab === 'present' ? 'white' : '#6b7280',
+            border: `2px solid ${activeTab === 'present' ? '#2563eb' : '#e5e7eb'}`,
+            borderRadius: '8px',
             cursor: 'pointer',
             fontSize: '1rem',
             fontWeight: '500',
-            transition: 'all 0.2s'
+            transition: 'all 0.2s ease'
+          }}
+          onMouseOver={(e) => {
+            if (activeTab !== 'present') {
+              e.target.style.borderColor = '#2563eb';
+              e.target.style.backgroundColor = '#f0f4ff';
+            }
+          }}
+          onMouseOut={(e) => {
+            if (activeTab !== 'present') {
+              e.target.style.borderColor = '#e5e7eb';
+              e.target.style.backgroundColor = '#f9fafb';
+            }
           }}
         >
           Present
@@ -91,14 +102,26 @@ const Dashboard = () => {
           onClick={() => setActiveTab('history')}
           style={{
             padding: '0.75rem 1.5rem',
-            backgroundColor: activeTab === 'history' ? '#007bff' : 'transparent',
-            color: activeTab === 'history' ? 'white' : '#6c757d',
-            border: '1px solid #007bff',
-            borderRadius: '6px',
+            backgroundColor: activeTab === 'history' ? '#2563eb' : '#f9fafb',
+            color: activeTab === 'history' ? 'white' : '#6b7280',
+            border: `2px solid ${activeTab === 'history' ? '#2563eb' : '#e5e7eb'}`,
+            borderRadius: '8px',
             cursor: 'pointer',
             fontSize: '1rem',
             fontWeight: '500',
-            transition: 'all 0.2s'
+            transition: 'all 0.2s ease'
+          }}
+          onMouseOver={(e) => {
+            if (activeTab !== 'history') {
+              e.target.style.borderColor = '#2563eb';
+              e.target.style.backgroundColor = '#f0f4ff';
+            }
+          }}
+          onMouseOut={(e) => {
+            if (activeTab !== 'history') {
+              e.target.style.borderColor = '#e5e7eb';
+              e.target.style.backgroundColor = '#f9fafb';
+            }
           }}
         >
           History

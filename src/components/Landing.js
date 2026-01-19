@@ -28,7 +28,7 @@ const Landing = () => {
       <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
         <h1 style={{
           margin: '0px',
-          color: 'rgb(26, 26, 26)',
+          color: '#2563eb',
           fontSize: '1.8rem',
           fontWeight: '600',
           textAlign: 'center'
@@ -36,7 +36,7 @@ const Landing = () => {
           Eating Behavior Insight
         </h1>
         <p style={{
-          color: '#666666',
+          color: '#6b7280',
           fontSize: '1.1rem',
           maxWidth: '400px',
           margin: '0 auto',
@@ -96,17 +96,17 @@ const Landing = () => {
           type="submit"
           style={{
             padding: '1rem',
-            backgroundColor: '#007bff',
+            backgroundColor: '#2563eb',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
             fontSize: '1rem',
             fontWeight: '500',
             cursor: 'pointer',
-            transition: 'background-color 0.2s'
+            transition: 'all 0.2s ease'
           }}
-          onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
-          onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
+          onMouseOver={(e) => e.target.style.backgroundColor = '#1d4ed8'}
+          onMouseOut={(e) => e.target.style.backgroundColor = '#2563eb'}
         >
           Sign In
         </button>

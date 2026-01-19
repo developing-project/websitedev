@@ -174,63 +174,201 @@ const PresentTab = () => {
     );
   };
 
-  const MealCard = ({ mealType, items }) => (
-    <div style={{
-      background: 'linear-gradient(135deg, #ffeaa7 0%, #fab1a0 50%, #fd79a8 100%)',
-      borderRadius: '16px',
-      padding: '1.5rem',
-      border: '3px solid rgba(255,255,255,0.3)',
-      boxShadow: '0 12px 40px rgba(253, 121, 168, 0.3)',
-      minHeight: '140px',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
-      <h4 style={{
-        margin: '0 0 1rem 0',
-        color: '#2d3436',
-        fontSize: '1.3rem',
-        fontWeight: '800',
-        textTransform: 'capitalize'
-      }}>
-        🍳 {mealType}
-      </h4>
+  const MealCard = ({ mealType, items }) => {
+    const mealColors = {
+      breakfast: { bg: '#f0f9ff', border: '#2563eb', text: '#1e40af', accent: '#3b82f6' },
+      lunch: { bg: '#f0fdf4', border: '#16a34a', text: '#166534', accent: '#22c55e' },
+      dinner: { bg: '#fefce8', border: '#ca8a04', text: '#92400e', accent: '#eab308' }
+    };
 
-      {items.length > 0 ? (
-        <ul style={{
-          margin: 0,
-          paddingLeft: '1.5rem',
-          color: '#2d3436'
-        }}>
-          {items.map((item, index) => (
-            <li key={index} style={{
-              marginBottom: '0.5rem',
-              fontSize: '0.95rem',
-              fontWeight: '500'
+    const colorScheme = mealColors[mealType] || mealColors.breakfast;
+
+    return (
+      <div style={{
+        backgroundColor: '#ffffff',
+        borderRadius: '20px',
+        padding: '2rem',
+        border: `3px solid ${colorScheme.border}`,
+        boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6)',
+        minHeight: '180px',
+        position: 'relative',
+        overflow: 'hidden',
+        transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        cursor: 'pointer',
+        transform: 'translateY(0)'
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+        e.currentTarget.style.boxShadow = '0 20px 60px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)';
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.transform = 'translateY(0) scale(1)';
+        e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6)';
+      }}
+      >
+        {/* Background gradient overlay */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: `linear-gradient(135deg, ${colorScheme.bg} 0%, rgba(255,255,255,0.95) 50%, ${colorScheme.bg} 100%)`,
+          opacity: 0.7,
+          zIndex: 1
+        }}></div>
+
+        {/* Floating accent elements */}
+        <div style={{
+          position: 'absolute',
+          top: '-10px',
+          right: '-10px',
+          width: '40px',
+          height: '40px',
+          backgroundColor: colorScheme.accent,
+          borderRadius: '50%',
+          opacity: 0.1,
+          animation: 'float 3s ease-in-out infinite'
+        }}></div>
+        <div style={{
+          position: 'absolute',
+          bottom: '-15px',
+          left: '-15px',
+          width: '60px',
+          height: '60px',
+          backgroundColor: colorScheme.accent,
+          borderRadius: '50%',
+          opacity: 0.05,
+          animation: 'float 4s ease-in-out infinite reverse'
+        }}></div>
+
+        {/* Content */}
+        <div style={{ position: 'relative', zIndex: 2 }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '1.5rem'
+          }}>
+            <h4 style={{
+              margin: 0,
+              color: colorScheme.text,
+              fontSize: '1.5rem',
+              fontWeight: '800',
+              textTransform: 'capitalize',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem'
             }}>
               <span style={{
-                background: 'rgba(255,255,255,0.8)',
-                padding: '0.2rem 0.6rem',
-                borderRadius: '10px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                display: 'inline-block'
+                fontSize: '1.8rem',
+                animation: 'bounce 2s ease-in-out infinite'
               }}>
-                {item}
+                🍳
               </span>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p style={{
-          margin: 0,
-          color: '#636e72',
-          fontStyle: 'italic',
-          fontSize: '0.9rem'
-        }}>
-          No {mealType} recorded
-        </p>
-      )}
-    </div>
-  );
+              {mealType}
+            </h4>
+
+            {items.length > 0 && (
+              <div style={{
+                backgroundColor: colorScheme.accent,
+                color: 'white',
+                padding: '0.5rem 1rem',
+                borderRadius: '20px',
+                fontSize: '0.8rem',
+                fontWeight: '700',
+                boxShadow: `0 4px 12px ${colorScheme.accent}40`,
+                animation: 'pulse 2s ease-in-out infinite'
+              }}>
+                ✓ {items.length} item{items.length !== 1 ? 's' : ''}
+              </div>
+            )}
+          </div>
+
+          {items.length > 0 ? (
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '0.75rem'
+            }}>
+              {items.map((item, index) => (
+                <span key={index} style={{
+                  backgroundColor: colorScheme.bg,
+                  color: colorScheme.text,
+                  padding: '0.5rem 1rem',
+                  borderRadius: '25px',
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  border: `2px solid ${colorScheme.border}30`,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                  transition: 'all 0.3s ease',
+                  animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
+                }}
+                onMouseOver={(e) => {
+                  e.target.style.transform = 'scale(1.05)';
+                  e.target.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.transform = 'scale(1)';
+                  e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
+                }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <div style={{
+              textAlign: 'center',
+              padding: '2rem 1rem',
+              color: '#6b7280',
+              fontStyle: 'italic'
+            }}>
+              <div style={{
+                fontSize: '3rem',
+                marginBottom: '1rem',
+                opacity: 0.3
+              }}>
+                🍽️
+              </div>
+              <p style={{
+                margin: 0,
+                fontSize: '1rem',
+                fontWeight: '500'
+              }}>
+                No {mealType} recorded yet
+              </p>
+              <p style={{
+                margin: '0.5rem 0 0 0',
+                fontSize: '0.8rem',
+                opacity: 0.7
+              }}>
+                Tap to add your first meal!
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Shine effect */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: '-100%',
+          width: '100%',
+          height: '100%',
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+          animation: 'shine 3s ease-in-out infinite'
+        }}></div>
+
+        <style>{`
+          @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+          }
+        `}</style>
+      </div>
+    );
+  };
 
   return (
     <div style={{
@@ -240,19 +378,18 @@ const PresentTab = () => {
     }}>
       {/* Header */}
       <header style={{
-        background: 'rgba(255, 255, 255, 0.95)',
-        backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-        padding: '1rem 0',
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #e5e7eb',
+        padding: '0.5rem 0',
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        boxShadow: '0 2px 20px rgba(0, 0, 0, 0.1)'
+        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
       }}>
         <div style={{
           maxWidth: '1200px',
           margin: '0 auto',
-          padding: '0 2rem',
+          padding: '0 1rem',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center'
@@ -265,7 +402,7 @@ const PresentTab = () => {
             <div style={{
               width: '40px',
               height: '40px',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              backgroundColor: '#2563eb',
               borderRadius: '12px',
               display: 'flex',
               alignItems: 'center',
@@ -279,18 +416,14 @@ const PresentTab = () => {
                 margin: 0,
                 fontSize: '1.5rem',
                 fontWeight: '700',
-                color: '#2d3748',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                color: '#2563eb'
               }}>
                 NutritionTracker
               </h1>
               <p style={{
                 margin: 0,
                 fontSize: '0.875rem',
-                color: '#718096'
+                color: '#6b7280'
               }}>
                 Your daily nutrition companion
               </p>
@@ -312,7 +445,7 @@ const PresentTab = () => {
                 alignItems: 'center',
                 gap: '0.5rem',
                 padding: '0.5rem 1rem',
-                background: 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)',
+                backgroundColor: '#16a34a',
                 borderRadius: '20px',
                 color: 'white',
                 fontSize: '0.875rem',
@@ -326,7 +459,7 @@ const PresentTab = () => {
                 alignItems: 'center',
                 gap: '0.5rem',
                 padding: '0.5rem 1rem',
-                background: 'linear-gradient(135deg, #4299e1 0%, #3182ce 100%)',
+                backgroundColor: '#2563eb',
                 borderRadius: '20px',
                 color: 'white',
                 fontSize: '0.875rem',
@@ -336,35 +469,6 @@ const PresentTab = () => {
                 <span>85% Goal</span>
               </div>
             </div>
-
-            <button
-              onClick={() => {
-                localStorage.removeItem('isLoggedIn');
-                window.location.href = '/';
-              }}
-              style={{
-                padding: '0.5rem 1rem',
-                background: 'linear-gradient(135deg, #e53e3e 0%, #c53030 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: '0 2px 8px rgba(197, 48, 48, 0.3)'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.transform = 'translateY(-1px)';
-                e.target.style.boxShadow = '0 4px 12px rgba(197, 48, 48, 0.4)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 2px 8px rgba(197, 48, 48, 0.3)';
-              }}
-            >
-              Logout
-            </button>
           </div>
         </div>
       </header>
@@ -373,60 +477,154 @@ const PresentTab = () => {
       <main style={{
         maxWidth: '1200px',
         margin: '0 auto',
-        padding: '2rem',
+        padding: '1rem',
         display: 'grid',
         gridTemplateColumns: '1fr',
-        gap: '2rem'
+        gap: '1rem'
       }}>
         {/* Welcome Section */}
         <section style={{
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '16px',
+          backgroundColor: '#ffffff',
+          borderRadius: '24px',
           padding: '2rem',
           textAlign: 'center',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          animation: 'fadeInUp 1s ease-out'
-        }}>
+          boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6)',
+          border: '2px solid #e5e7eb',
+          animation: 'slideInDownBounce 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) both',
+          position: 'relative',
+          overflow: 'hidden',
+          cursor: 'pointer',
+          transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+        }}
+        onMouseOver={(e) => {
+          e.currentTarget.style.transform = 'translateY(-8px) scale(1.01)';
+          e.currentTarget.style.boxShadow = '0 20px 60px rgba(37, 99, 235, 0.15), inset 0 1px 0 rgba(255,255,255,0.8)';
+          e.currentTarget.style.borderColor = '#2563eb';
+        }}
+        onMouseOut={(e) => {
+          e.currentTarget.style.transform = 'translateY(0) scale(1)';
+          e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6)';
+          e.currentTarget.style.borderColor = '#e5e7eb';
+        }}
+        >
+          {/* Animated background particles */}
+          <div style={{
+            position: 'absolute',
+            top: '10%',
+            left: '10%',
+            width: '8px',
+            height: '8px',
+            backgroundColor: '#2563eb',
+            borderRadius: '50%',
+            opacity: 0.3,
+            animation: 'particleFloat1 6s ease-in-out infinite'
+          }}></div>
+          <div style={{
+            position: 'absolute',
+            top: '20%',
+            right: '15%',
+            width: '6px',
+            height: '6px',
+            backgroundColor: '#16a34a',
+            borderRadius: '50%',
+            opacity: 0.4,
+            animation: 'particleFloat2 8s ease-in-out infinite'
+          }}></div>
+          <div style={{
+            position: 'absolute',
+            bottom: '15%',
+            left: '20%',
+            width: '5px',
+            height: '5px',
+            backgroundColor: '#ca8a04',
+            borderRadius: '50%',
+            opacity: 0.3,
+            animation: 'particleFloat3 7s ease-in-out infinite'
+          }}></div>
+
+          {/* Main floating decoration */}
+          <div style={{
+            position: 'absolute',
+            top: '-30px',
+            right: '-30px',
+            width: '80px',
+            height: '80px',
+            background: 'linear-gradient(135deg, #2563eb15 0%, #16a34a15 100%)',
+            borderRadius: '50%',
+            animation: 'floatComplex 5s ease-in-out infinite',
+            border: '2px solid #2563eb20'
+          }}></div>
+
+          {/* Emoji with bounce */}
+          <div style={{
+            fontSize: '3rem',
+            marginBottom: '1rem',
+            animation: 'emojiBounce 2.5s ease-in-out infinite',
+            display: 'inline-block'
+          }}>
+            👋
+          </div>
+
           <h2 style={{
-            margin: '0 0 1rem 0',
-            fontSize: '2rem',
-            fontWeight: '700',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            margin: '0 0 1.5rem 0',
+            fontSize: '2.5rem',
+            fontWeight: '800',
+            background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
+            backgroundClip: 'text',
+            animation: 'textGlow 3s ease-in-out infinite alternate, slideInUpBounce 1s ease-out 0.3s both',
+            textShadow: '0 0 30px rgba(37, 99, 235, 0.3)'
           }}>
-            Welcome back! 👋
+            Welcome back!
           </h2>
+
           <p style={{
             margin: '0 auto',
-            fontSize: '1.1rem',
-            color: '#4a5568',
-            maxWidth: '600px',
-            lineHeight: '1.6'
+            fontSize: '1.2rem',
+            color: '#6b7280',
+            maxWidth: '650px',
+            lineHeight: '1.7',
+            animation: 'fadeInScale 1s ease-out 0.6s both',
+            fontWeight: '500'
           }}>
-            You're doing great! Keep up the healthy eating habits. Here's your nutrition overview for today.
+            You're doing <span style={{
+              color: '#16a34a',
+              fontWeight: '700',
+              animation: 'highlightPulse 2s ease-in-out infinite'
+            }}>amazing</span>!
+            Keep up the healthy eating habits. Here's your nutrition overview for today.
           </p>
+
+          {/* Animated underline */}
+          <div style={{
+            width: '100px',
+            height: '4px',
+            background: 'linear-gradient(90deg, #2563eb 0%, #16a34a 100%)',
+            borderRadius: '2px',
+            margin: '1.5rem auto 0',
+            animation: 'underlineGrow 1.5s ease-out 1s both'
+          }}></div>
         </section>
 
         {/* Dashboard Grid */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-          gap: '2rem',
-          alignItems: 'start'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '1rem',
+          alignItems: 'stretch'
         }}>
           {/* Nutrition Overview Card */}
           <section style={{
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(10px)',
+            backgroundColor: '#ffffff',
             borderRadius: '16px',
             padding: '2rem',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            animation: 'slideInLeft 0.8s ease-out'
+            boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
+            border: '1px solid #e5e7eb',
+            animation: 'slideInLeft 0.8s ease-out',
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '600px'
           }}>
             <div style={{
               display: 'flex',
@@ -438,7 +636,7 @@ const PresentTab = () => {
                 margin: 0,
                 fontSize: '1.5rem',
                 fontWeight: '700',
-                color: '#2d3748'
+                color: '#2563eb'
               }}>
                 📊 Daily Nutrition Overview
               </h3>
@@ -447,23 +645,20 @@ const PresentTab = () => {
                 onChange={(e) => setChartType(e.target.value)}
                 style={{
                   padding: '0.5rem 1rem',
-                  border: '2px solid #e2e8f0',
+                  border: '2px solid #e5e7eb',
                   borderRadius: '8px',
-                  backgroundColor: 'white',
+                  backgroundColor: '#ffffff',
                   fontSize: '0.875rem',
                   fontWeight: '500',
-                  color: '#4a5568',
+                  color: '#6b7280',
                   cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                  transition: 'all 0.2s ease'
                 }}
                 onMouseOver={(e) => {
-                  e.target.style.borderColor = '#667eea';
-                  e.target.style.boxShadow = '0 2px 8px rgba(102, 126, 234, 0.2)';
+                  e.target.style.borderColor = '#2563eb';
                 }}
                 onMouseOut={(e) => {
-                  e.target.style.borderColor = '#e2e8f0';
-                  e.target.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
+                  e.target.style.borderColor = '#e5e7eb';
                 }}
               >
                 <option value="calories">🍽️ Calories by Meal</option>
@@ -475,28 +670,80 @@ const PresentTab = () => {
           </section>
 
           {/* Current Food Section */}
-          <Card title="Current Meal Details" bgColor="#ffffff">
+          <section style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '16px',
+            padding: '2rem',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.05)',
+            border: '1px solid #e5e7eb',
+            animation: 'slideInRight 0.8s ease-out',
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '600px'
+          }}>
+            <h3 style={{
+              margin: '0 0 1.5rem 0',
+              color: '#1a1a1a',
+              fontSize: '1.2rem',
+              fontWeight: '600'
+            }}>
+              Current Meal Details
+            </h3>
             <div style={{
               display: 'flex',
               gap: '2rem',
               alignItems: 'flex-start',
-              background: 'linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)',
-              borderRadius: '16px',
+              backgroundColor: '#ffffff',
+              borderRadius: '20px',
               padding: '2rem',
               boxShadow: '0 8px 32px rgba(0,0,0,0.08)',
-              border: '1px solid rgba(255,255,255,0.8)'
+              border: '2px solid #e5e7eb',
+              position: 'relative',
+              overflow: 'hidden',
+              flex: 1
             }}>
+              {/* Background decoration */}
+              <div style={{
+                position: 'absolute',
+                top: '-20px',
+                right: '-20px',
+                width: '80px',
+                height: '80px',
+                backgroundColor: '#2563eb',
+                borderRadius: '50%',
+                opacity: 0.05,
+                animation: 'float 4s ease-in-out infinite'
+              }}></div>
+              <div style={{
+                position: 'absolute',
+                bottom: '-30px',
+                left: '-30px',
+                width: '100px',
+                height: '100px',
+                backgroundColor: '#16a34a',
+                borderRadius: '50%',
+                opacity: 0.03,
+                animation: 'float 5s ease-in-out infinite reverse'
+              }}></div>
+
               {/* Food Image */}
-              <div style={{ flex: 1, position: 'relative' }}>
+              <div style={{ flex: 1, position: 'relative', zIndex: 2 }}>
                 <div style={{
                   position: 'relative',
                   overflow: 'hidden',
-                  borderRadius: '16px',
+                  borderRadius: '20px',
                   boxShadow: '0 12px 40px rgba(0,0,0,0.15)',
-                  transition: 'transform 0.3s ease'
+                  transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                  cursor: 'pointer'
                 }}
-                onMouseOver={(e) => e.target.style.transform = 'scale(1.02)'}
-                onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
+                onMouseOver={(e) => {
+                  e.target.style.transform = 'scale(1.03) rotate(1deg)';
+                  e.target.style.boxShadow = '0 20px 60px rgba(37, 99, 235, 0.2)';
+                }}
+                onMouseOut={(e) => {
+                  e.target.style.transform = 'scale(1) rotate(0deg)';
+                  e.target.style.boxShadow = '0 12px 40px rgba(0,0,0,0.15)';
+                }}
                 >
                   <img
                     src={currentFoodImage}
@@ -505,7 +752,7 @@ const PresentTab = () => {
                       width: '100%',
                       maxWidth: '320px',
                       height: 'auto',
-                      borderRadius: '16px',
+                      borderRadius: '20px',
                       transition: 'filter 0.3s ease'
                     }}
                   />
@@ -515,38 +762,45 @@ const PresentTab = () => {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    background: 'linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 100%)',
-                    borderRadius: '16px',
+                    background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(255,255,255,0.2) 50%, rgba(22, 163, 74, 0.1) 100%)',
+                    borderRadius: '20px',
+                    pointerEvents: 'none'
+                  }}></div>
+
+                  {/* Shine effect */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: '-100%',
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+                    animation: 'shine 4s ease-in-out infinite',
                     pointerEvents: 'none'
                   }}></div>
                 </div>
 
-                {/* Floating badge */}
+                {/* Quality indicators */}
                 <div style={{
                   position: 'absolute',
-                  top: '-10px',
-                  right: '-10px',
-                  background: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%)',
-                  color: 'white',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '20px',
-                  fontSize: '0.8rem',
-                  fontWeight: '600',
-                  boxShadow: '0 4px 12px rgba(255,107,107,0.3)',
-                  animation: 'bounce 2s ease-in-out infinite'
+                  bottom: '12px',
+                  left: '12px',
+                  display: 'flex',
+                  gap: '0.5rem',
+                  zIndex: 3
                 }}>
-                  🔥 Hot Meal
                 </div>
               </div>
 
               {/* Nutrition Details */}
-              <div style={{ flex: 1 }}>
+              <div style={{ flex: 1, position: 'relative', zIndex: 2 }}>
                 <h4 style={{
                   margin: '0 0 1.5rem 0',
-                  color: '#1a1a1a',
-                  fontSize: '1.4rem',
-                  fontWeight: '700',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: '#2563eb',
+                  fontSize: '1.6rem',
+                  fontWeight: '800',
+                  textAlign: 'center',
+                  background: 'linear-gradient(135deg, #2563eb 0%, #3b82f6 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -556,105 +810,124 @@ const PresentTab = () => {
                 </h4>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                  {/* Calories - Special highlight */}
+                  {/* Calories - Primary highlight */}
                   <div style={{
-                    padding: '1.25rem',
-                    background: 'linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%)',
-                    borderRadius: '12px',
-                    border: '2px solid #ffd43b',
-                    boxShadow: '0 6px 20px rgba(255, 193, 7, 0.2)',
-                    transition: 'all 0.3s ease',
+                    padding: '1.5rem',
+                    backgroundColor: '#fefce8',
+                    borderRadius: '16px',
+                    border: '3px solid #ca8a04',
+                    boxShadow: '0 6px 24px rgba(202, 138, 4, 0.15)',
+                    transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                     cursor: 'pointer',
                     position: 'relative',
                     overflow: 'hidden'
                   }}
                   onMouseOver={(e) => {
-                    e.target.style.transform = 'translateY(-4px)';
-                    e.target.style.boxShadow = '0 12px 32px rgba(255, 193, 7, 0.3)';
+                    e.target.style.transform = 'translateY(-6px) scale(1.02)';
+                    e.target.style.boxShadow = '0 12px 36px rgba(202, 138, 4, 0.25)';
                   }}
                   onMouseOut={(e) => {
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = '0 6px 20px rgba(255, 193, 7, 0.2)';
+                    e.target.style.transform = 'translateY(0) scale(1)';
+                    e.target.style.boxShadow = '0 6px 24px rgba(202, 138, 4, 0.15)';
                   }}
                   >
-                    <div style={{ fontSize: '0.9rem', color: '#856404', fontWeight: '600', marginBottom: '0.5rem' }}>Calories</div>
+                    <div style={{
+                      fontSize: '1rem',
+                      color: '#92400e',
+                      fontWeight: '700',
+                      marginBottom: '0.75rem',
+                      textAlign: 'center'
+                    }}>
+                      🔥 Calories
+                    </div>
                     <div style={{
                       width: '100%',
-                      height: '24px',
-                      background: 'rgba(214, 137, 16, 0.2)',
-                      borderRadius: '12px',
+                      height: '28px',
+                      backgroundColor: '#f3f4f6',
+                      borderRadius: '14px',
                       overflow: 'hidden',
                       position: 'relative'
                     }}>
                       <div style={{
                         height: '100%',
                         width: '35%',
-                        background: 'linear-gradient(90deg, #d68910 0%, #f39c12 100%)',
-                        borderRadius: '12px',
-                        animation: 'progressFill 2s ease-out',
+                        background: 'linear-gradient(90deg, #ca8a04 0%, #eab308 100%)',
+                        borderRadius: '14px',
+                        animation: 'progressFill 2.5s ease-out',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: 'white',
-                        fontSize: '0.8rem',
-                        fontWeight: '700',
-                        textShadow: '0 1px 2px rgba(0,0,0,0.3)'
+                        fontSize: '0.9rem',
+                        fontWeight: '800',
+                        textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+                        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.2)'
                       }}>
                         420
                       </div>
                     </div>
+                    {/* Sparkle effect */}
                     <div style={{
                       position: 'absolute',
-                      top: 0,
-                      right: 0,
-                      width: '20px',
-                      height: '20px',
-                      background: '#ffd43b',
-                      borderRadius: '0 12px 0 20px'
+                      top: '8px',
+                      right: '8px',
+                      width: '6px',
+                      height: '6px',
+                      backgroundColor: '#ca8a04',
+                      borderRadius: '50%',
+                      animation: 'twinkle 1.5s ease-in-out infinite'
                     }}></div>
                   </div>
 
                   {/* Carbs */}
                   <div style={{
-                    padding: '1.25rem',
-                    background: 'linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%)',
-                    borderRadius: '12px',
-                    border: '2px solid #17a2b8',
-                    boxShadow: '0 6px 20px rgba(23, 162, 184, 0.2)',
-                    transition: 'all 0.3s ease',
+                    padding: '1.5rem',
+                    backgroundColor: '#f0f9ff',
+                    borderRadius: '16px',
+                    border: '3px solid #2563eb',
+                    boxShadow: '0 6px 24px rgba(37, 99, 235, 0.15)',
+                    transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                     cursor: 'pointer',
-                    position: 'relative'
+                    position: 'relative',
+                    overflow: 'hidden'
                   }}
                   onMouseOver={(e) => {
-                    e.target.style.transform = 'translateY(-4px)';
-                    e.target.style.boxShadow = '0 12px 32px rgba(23, 162, 184, 0.3)';
+                    e.target.style.transform = 'translateY(-6px) scale(1.02)';
+                    e.target.style.boxShadow = '0 12px 36px rgba(37, 99, 235, 0.25)';
                   }}
                   onMouseOut={(e) => {
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = '0 6px 20px rgba(23, 162, 184, 0.2)';
+                    e.target.style.transform = 'translateY(0) scale(1)';
+                    e.target.style.boxShadow = '0 6px 24px rgba(37, 99, 235, 0.15)';
                   }}
                   >
-                    <div style={{ fontSize: '0.9rem', color: '#0c5460', fontWeight: '600', marginBottom: '0.5rem' }}>Carbs</div>
+                    <div style={{
+                      fontSize: '1rem',
+                      color: '#1e40af',
+                      fontWeight: '700',
+                      marginBottom: '0.75rem',
+                      textAlign: 'center'
+                    }}>
+                      🌾 Carbs
+                    </div>
                     <div style={{
                       width: '100%',
-                      height: '24px',
-                      background: 'rgba(12, 84, 96, 0.2)',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      position: 'relative'
+                      height: '28px',
+                      backgroundColor: '#f3f4f6',
+                      borderRadius: '14px',
+                      overflow: 'hidden'
                     }}>
                       <div style={{
                         height: '100%',
                         width: '8%',
-                        background: 'linear-gradient(90deg, #17a2b8 0%, #20c997 100%)',
-                        borderRadius: '12px',
-                        animation: 'progressFill 1.5s ease-out',
+                        background: 'linear-gradient(90deg, #2563eb 0%, #3b82f6 100%)',
+                        borderRadius: '14px',
+                        animation: 'progressFill 2s ease-out 0.3s both',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: 'white',
-                        fontSize: '0.7rem',
-                        fontWeight: '700',
+                        fontSize: '0.8rem',
+                        fontWeight: '800',
                         textShadow: '0 1px 2px rgba(0,0,0,0.3)'
                       }}>
                         8%
@@ -664,93 +937,119 @@ const PresentTab = () => {
 
                   {/* Proteins */}
                   <div style={{
-                    padding: '1.25rem',
-                    background: 'linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%)',
-                    borderRadius: '12px',
-                    border: '2px solid #dc3545',
-                    boxShadow: '0 6px 20px rgba(220, 53, 69, 0.2)',
-                    transition: 'all 0.3s ease',
+                    padding: '1.5rem',
+                    backgroundColor: '#fef2f2',
+                    borderRadius: '16px',
+                    border: '3px solid #dc3545',
+                    boxShadow: '0 6px 24px rgba(220, 53, 69, 0.15)',
+                    transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                     cursor: 'pointer',
-                    position: 'relative'
+                    position: 'relative',
+                    overflow: 'hidden'
                   }}
                   onMouseOver={(e) => {
-                    e.target.style.transform = 'translateY(-4px)';
-                    e.target.style.boxShadow = '0 12px 32px rgba(220, 53, 69, 0.3)';
+                    e.target.style.transform = 'translateY(-6px) scale(1.02)';
+                    e.target.style.boxShadow = '0 12px 36px rgba(220, 53, 69, 0.25)';
                   }}
                   onMouseOut={(e) => {
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = '0 6px 20px rgba(220, 53, 69, 0.2)';
+                    e.target.style.transform = 'translateY(0) scale(1)';
+                    e.target.style.boxShadow = '0 6px 24px rgba(220, 53, 69, 0.15)';
                   }}
                   >
-                    <div style={{ fontSize: '0.9rem', color: '#721c24', fontWeight: '600', marginBottom: '0.5rem' }}>Proteins</div>
+                    <div style={{
+                      fontSize: '1rem',
+                      color: '#991b1b',
+                      fontWeight: '700',
+                      marginBottom: '0.75rem',
+                      textAlign: 'center'
+                    }}>
+                      💪 Proteins
+                    </div>
                     <div style={{
                       width: '100%',
-                      height: '24px',
-                      background: 'rgba(114, 28, 36, 0.2)',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      position: 'relative'
+                      height: '28px',
+                      backgroundColor: '#f3f4f6',
+                      borderRadius: '14px',
+                      overflow: 'hidden'
                     }}>
                       <div style={{
                         height: '100%',
                         width: '70%',
                         background: 'linear-gradient(90deg, #dc3545 0%, #e74c3c 100%)',
-                        borderRadius: '12px',
-                        animation: 'progressFill 1.5s ease-out 0.2s both',
+                        borderRadius: '14px',
+                        animation: 'progressFill 2.2s ease-out 0.6s both',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: 'white',
-                        fontSize: '0.7rem',
-                        fontWeight: '700',
+                        fontSize: '0.8rem',
+                        fontWeight: '800',
                         textShadow: '0 1px 2px rgba(0,0,0,0.3)'
                       }}>
                         70%
                       </div>
                     </div>
+                    {/* Achievement star */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '8px',
+                      right: '8px',
+                      fontSize: '1rem',
+                      animation: 'bounce 1.8s ease-in-out infinite 0.5s'
+                    }}>
+                      ⭐
+                    </div>
                   </div>
 
                   {/* Fats */}
                   <div style={{
-                    padding: '1.25rem',
-                    background: 'linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%)',
-                    borderRadius: '12px',
-                    border: '2px solid #28a745',
-                    boxShadow: '0 6px 20px rgba(40, 167, 69, 0.2)',
-                    transition: 'all 0.3s ease',
+                    padding: '1.5rem',
+                    backgroundColor: '#f0fdf4',
+                    borderRadius: '16px',
+                    border: '3px solid #16a34a',
+                    boxShadow: '0 6px 24px rgba(22, 163, 74, 0.15)',
+                    transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                     cursor: 'pointer',
-                    position: 'relative'
+                    position: 'relative',
+                    overflow: 'hidden'
                   }}
                   onMouseOver={(e) => {
-                    e.target.style.transform = 'translateY(-4px)';
-                    e.target.style.boxShadow = '0 12px 32px rgba(40, 167, 69, 0.3)';
+                    e.target.style.transform = 'translateY(-6px) scale(1.02)';
+                    e.target.style.boxShadow = '0 12px 36px rgba(22, 163, 74, 0.25)';
                   }}
                   onMouseOut={(e) => {
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = '0 6px 20px rgba(40, 167, 69, 0.2)';
+                    e.target.style.transform = 'translateY(0) scale(1)';
+                    e.target.style.boxShadow = '0 6px 24px rgba(22, 163, 74, 0.15)';
                   }}
                   >
-                    <div style={{ fontSize: '0.9rem', color: '#155724', fontWeight: '600', marginBottom: '0.5rem' }}>Fats</div>
+                    <div style={{
+                      fontSize: '1rem',
+                      color: '#166534',
+                      fontWeight: '700',
+                      marginBottom: '0.75rem',
+                      textAlign: 'center'
+                    }}>
+                      🥑 Fats
+                    </div>
                     <div style={{
                       width: '100%',
-                      height: '24px',
-                      background: 'rgba(21, 87, 36, 0.2)',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      position: 'relative'
+                      height: '28px',
+                      backgroundColor: '#f3f4f6',
+                      borderRadius: '14px',
+                      overflow: 'hidden'
                     }}>
                       <div style={{
                         height: '100%',
                         width: '34%',
-                        background: 'linear-gradient(90deg, #28a745 0%, #20c997 100%)',
-                        borderRadius: '12px',
-                        animation: 'progressFill 1.5s ease-out 0.4s both',
+                        background: 'linear-gradient(90deg, #16a34a 0%, #22c55e 100%)',
+                        borderRadius: '14px',
+                        animation: 'progressFill 2s ease-out 0.9s both',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: 'white',
-                        fontSize: '0.7rem',
-                        fontWeight: '700',
+                        fontSize: '0.8rem',
+                        fontWeight: '800',
                         textShadow: '0 1px 2px rgba(0,0,0,0.3)'
                       }}>
                         34%
@@ -759,20 +1058,47 @@ const PresentTab = () => {
                   </div>
                 </div>
 
+                {/* Additional nutrition info */}
                 <div style={{
-                  marginTop: '1.5rem',
-                  padding: '1rem',
-                  background: 'linear-gradient(135deg, rgba(108, 117, 125, 0.1) 0%, rgba(108, 117, 125, 0.05) 100%)',
-                  borderRadius: '8px',
-                  border: '1px solid rgba(108, 117, 125, 0.2)'
+                  marginTop: '2rem',
+                  padding: '1.5rem',
+                  backgroundColor: '#f9fafb',
+                  borderRadius: '16px',
+                  border: '2px solid #e5e7eb',
+                  position: 'relative'
                 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                    <span style={{ fontSize: '0.9rem', color: '#495057', fontWeight: '600' }}>Fiber:</span>
-                    <span style={{ fontSize: '0.9rem', color: '#6c757d', fontWeight: '500' }}>{currentFoodNutrition.fiber}</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '0.9rem', color: '#495057', fontWeight: '600' }}>Sugar:</span>
-                    <span style={{ fontSize: '0.9rem', color: '#6c757d', fontWeight: '500' }}>{currentFoodNutrition.sugar}</span>
+                  <h5 style={{
+                    margin: '0 0 1rem 0',
+                    color: '#2563eb',
+                    fontSize: '1.1rem',
+                    fontWeight: '700',
+                    textAlign: 'center'
+                  }}>
+                    📊 Additional Nutrients
+                  </h5>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div style={{
+                      textAlign: 'center',
+                      padding: '0.75rem',
+                      backgroundColor: '#ffffff',
+                      borderRadius: '12px',
+                      border: '2px solid #16a34a',
+                      boxShadow: '0 2px 8px rgba(22, 163, 74, 0.1)'
+                    }}>
+                      <div style={{ fontSize: '0.8rem', color: '#6b7280', fontWeight: '600' }}>Fiber</div>
+                      <div style={{ fontSize: '1.2rem', color: '#16a34a', fontWeight: '800' }}>{currentFoodNutrition.fiber}</div>
+                    </div>
+                    <div style={{
+                      textAlign: 'center',
+                      padding: '0.75rem',
+                      backgroundColor: '#ffffff',
+                      borderRadius: '12px',
+                      border: '2px solid #ca8a04',
+                      boxShadow: '0 2px 8px rgba(202, 138, 4, 0.1)'
+                    }}>
+                      <div style={{ fontSize: '0.8rem', color: '#6b7280', fontWeight: '600' }}>Sugar</div>
+                      <div style={{ fontSize: '1.2rem', color: '#ca8a04', fontWeight: '800' }}>{currentFoodNutrition.sugar}</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -795,7 +1121,7 @@ const PresentTab = () => {
                 100% { width: var(--progress-width); }
               }
             `}</style>
-          </Card>
+          </section>
         </div>
 
         {/* Food Categories */}
@@ -808,10 +1134,10 @@ const PresentTab = () => {
           }}>
             {foodCategories.map((category, index) => {
               const colors = [
-                { bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', icon: '🥕', shadow: 'rgba(102, 126, 234, 0.3)' },
-                { bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', icon: '🌾', shadow: 'rgba(240, 147, 251, 0.3)' },
-                { bg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', icon: '🥩', shadow: 'rgba(79, 172, 254, 0.3)' },
-                { bg: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', icon: '🥛', shadow: 'rgba(67, 233, 123, 0.3)' }
+                { bg: '#f0f9ff', border: '#2563eb', icon: '🥕', shadow: 'rgba(37, 99, 235, 0.3)' },
+                { bg: '#f0fdf4', border: '#16a34a', icon: '🌾', shadow: 'rgba(22, 163, 74, 0.3)' },
+                { bg: '#f9fafb', border: '#6b7280', icon: '🥩', shadow: 'rgba(107, 114, 128, 0.3)' },
+                { bg: '#fefce8', border: '#ca8a04', icon: '🥛', shadow: 'rgba(202, 138, 4, 0.3)' }
               ];
               const colorScheme = colors[index];
 
@@ -820,52 +1146,30 @@ const PresentTab = () => {
                   key={index}
                   style={{
                     position: 'relative',
-                    background: colorScheme.bg,
+                    backgroundColor: colorScheme.bg,
                     borderRadius: '16px',
                     padding: '1.5rem 1rem',
-                    color: 'white',
+                    border: `2px solid ${colorScheme.border}`,
                     cursor: 'pointer',
-                    transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                    boxShadow: `0 8px 32px ${colorScheme.shadow}`,
+                    transition: 'all 0.3s ease',
+                    boxShadow: `0 4px 16px rgba(0,0,0,0.05)`,
                     animation: `slideInUp 0.6s ease-out ${index * 0.1}s both`,
                     overflow: 'hidden'
                   }}
                   onMouseOver={(e) => {
-                    e.target.style.transform = 'translateY(-8px) scale(1.05)';
-                    e.target.style.boxShadow = `0 20px 60px ${colorScheme.shadow}`;
+                    e.target.style.transform = 'translateY(-4px)';
+                    e.target.style.boxShadow = `0 8px 24px rgba(0,0,0,0.1)`;
                   }}
                   onMouseOut={(e) => {
-                    e.target.style.transform = 'translateY(0) scale(1)';
-                    e.target.style.boxShadow = `0 8px 32px ${colorScheme.shadow}`;
+                    e.target.style.transform = 'translateY(0)';
+                    e.target.style.boxShadow = `0 4px 16px rgba(0,0,0,0.05)`;
                   }}
                 >
-                  {/* Background pattern */}
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    width: '60px',
-                    height: '60px',
-                    background: 'rgba(255,255,255,0.1)',
-                    borderRadius: '50%',
-                    transform: 'translate(20px, -20px)'
-                  }}></div>
-                  <div style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    width: '40px',
-                    height: '40px',
-                    background: 'rgba(255,255,255,0.05)',
-                    borderRadius: '50%',
-                    transform: 'translate(-15px, 15px)'
-                  }}></div>
-
                   {/* Icon */}
                   <div style={{
                     fontSize: '2rem',
                     marginBottom: '0.5rem',
-                    animation: `bounce 2s ease-in-out ${index * 0.2 + 0.5}s infinite`
+                    textAlign: 'center'
                   }}>
                     {colorScheme.icon}
                   </div>
@@ -875,71 +1179,187 @@ const PresentTab = () => {
                     fontSize: '1rem',
                     fontWeight: '700',
                     textAlign: 'center',
-                    textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                    color: colorScheme.border,
                     animation: `fadeIn 0.8s ease-out ${index * 0.1 + 0.3}s both`
                   }}>
                     {category}
                   </div>
-
-                  {/* Animated particles */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '10px',
-                    right: '10px',
-                    width: '4px',
-                    height: '4px',
-                    background: 'rgba(255,255,255,0.6)',
-                    borderRadius: '50%',
-                    animation: `twinkle 1.5s ease-in-out ${index * 0.3}s infinite`
-                  }}></div>
-                  <div style={{
-                    position: 'absolute',
-                    bottom: '15px',
-                    left: '15px',
-                    width: '3px',
-                    height: '3px',
-                    background: 'rgba(255,255,255,0.4)',
-                    borderRadius: '50%',
-                    animation: `twinkle 1.5s ease-in-out ${index * 0.3 + 0.5}s infinite`
-                  }}></div>
                 </div>
               );
             })}
           </div>
 
-          {/* Additional animations */}
+          {/* Enhanced animations */}
           <style>{`
-            @keyframes slideInUp {
+            @keyframes slideInDownBounce {
               0% {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(-50px) scale(0.8);
+              }
+              60% {
+                opacity: 1;
+                transform: translateY(10px) scale(1.05);
               }
               100% {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
               }
+            }
+            @keyframes slideInUpBounce {
+              0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.8);
+              }
+              60% {
+                opacity: 1;
+                transform: translateY(-10px) scale(1.05);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
+            }
+            @keyframes emojiBounce {
+              0%, 100% { transform: translateY(0) scale(1); }
+              50% { transform: translateY(-10px) scale(1.1); }
+            }
+            @keyframes textGlow {
+              0%, 100% {
+                text-shadow: 0 0 20px rgba(37, 99, 235, 0.3), 0 0 40px rgba(37, 99, 235, 0.1);
+              }
+              50% {
+                text-shadow: 0 0 30px rgba(37, 99, 235, 0.5), 0 0 60px rgba(37, 99, 235, 0.2);
+              }
+            }
+            @keyframes highlightPulse {
+              0%, 100% { color: #16a34a; transform: scale(1); }
+              50% { color: #22c55e; transform: scale(1.05); }
+            }
+            @keyframes underlineGrow {
+              0% { width: 0; opacity: 0; }
+              100% { width: 100px; opacity: 1; }
+            }
+            @keyframes fadeInScale {
+              0% { opacity: 0; transform: scale(0.9); }
+              100% { opacity: 1; transform: scale(1); }
+            }
+            @keyframes particleFloat1 {
+              0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+              50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
+            }
+            @keyframes particleFloat2 {
+              0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+              50% { transform: translateY(-25px) rotate(-180deg); opacity: 0.8; }
+            }
+            @keyframes particleFloat3 {
+              0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+              50% { transform: translateY(-15px) rotate(360deg); opacity: 0.5; }
+            }
+            @keyframes floatComplex {
+              0%, 100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 0.1;
+              }
+              25% {
+                transform: translateY(-15px) rotate(90deg) scale(1.1);
+                opacity: 0.15;
+              }
+              50% {
+                transform: translateY(-25px) rotate(180deg) scale(0.9);
+                opacity: 0.2;
+              }
+              75% {
+                transform: translateY(-10px) rotate(270deg) scale(1.05);
+                opacity: 0.12;
+              }
+            }
+            @keyframes slideInDown {
+              0% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
+            }
+            @keyframes slideInLeft {
+              0% {
+                opacity: 0;
+                transform: translateX(-50px);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            @keyframes slideInUp {
+              0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
+            }
+            @keyframes bounceIn {
+              0% { opacity: 0; transform: scale(0.3); }
+              50% { opacity: 1; transform: scale(1.05); }
+              70% { transform: scale(0.9); }
+              100% { opacity: 1; transform: scale(1); }
+            }
+            @keyframes fadeInUp {
+              0% { opacity: 0; transform: translateY(20px); }
+              100% { opacity: 1; transform: translateY(0); }
             }
             @keyframes bounce {
               0%, 20%, 53%, 80%, 100% {
                 transform: translate3d(0,0,0);
               }
               40%, 43% {
-                transform: translate3d(0, -5px, 0);
+                transform: translate3d(0, -8px, 0);
               }
               70% {
-                transform: translate3d(0, -2px, 0);
+                transform: translate3d(0, -4px, 0);
               }
               90% {
-                transform: translate3d(0, -1px, 0);
+                transform: translate3d(0, -2px, 0);
               }
             }
-            @keyframes fadeIn {
-              0% { opacity: 0; }
-              100% { opacity: 1; }
+            @keyframes float {
+              0%, 100% { transform: translateY(0px) rotate(0deg); }
+              33% { transform: translateY(-10px) rotate(1deg); }
+              66% { transform: translateY(5px) rotate(-1deg); }
+            }
+            @keyframes pulse {
+              0%, 100% { transform: scale(1); }
+              50% { transform: scale(1.02); }
+            }
+            @keyframes shimmer {
+              0% { background-position: -200% center; }
+              100% { background-position: 200% center; }
+            }
+            @keyframes progressFill {
+              0% { width: 0%; }
+              100% { width: var(--progress-width); }
+            }
+            @keyframes glow {
+              0%, 100% { box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
+              50% { box-shadow: 0 8px 32px rgba(37, 99, 235, 0.15); }
+            }
+            @keyframes wiggle {
+              0%, 100% { transform: rotate(0deg); }
+              25% { transform: rotate(-1deg); }
+              75% { transform: rotate(1deg); }
             }
             @keyframes twinkle {
-              0%, 100% { opacity: 0.3; transform: scale(1); }
+              0%, 100% { opacity: 0.5; transform: scale(1); }
               50% { opacity: 1; transform: scale(1.2); }
+            }
+            @keyframes shine {
+              0% { left: -100%; }
+              100% { left: 100%; }
             }
           `}</style>
         </Card>

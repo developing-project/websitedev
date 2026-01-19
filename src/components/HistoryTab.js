@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 const HistoryTab = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('daily');
   const [showTrackRecord, setShowTrackRecord] = useState(false);
-  const [activeSection, setActiveSection] = useState('header');
+  const [activeSection] = useState('header');
   const sectionRefs = useRef({});
 
   // Scroll-triggered highlighting effect
